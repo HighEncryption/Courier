@@ -50,7 +50,9 @@
     <Compile Include="ReceiveFileRequestMessage.cs" />
     <Compile Include="ReceiveFileResponseMessage.cs" />
     <Compile Include="SendFileRequestMessage.cs" />
+    <Compile Include="SendFileResponseMessage.cs" />
     <Compile Include="SerialPortManager.cs" />
+    <Compile Include="StreamExtensions.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

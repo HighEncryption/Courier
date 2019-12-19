@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Commands\ReceiveFile.cs" />
     <Compile Include="SerialPortInstance.cs" />
     <Compile Include="DispatcherCmdlet.cs" />
     <Compile Include="Commands\GetFiles.cs" />

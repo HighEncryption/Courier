@@ -24,4 +24,11 @@
             return new MemoryStream(metadataBytes);
         }
     }
+
+    public class ReceiveFileRequestMetadata
+    {
+        public string Filename { get; set; }
+
+        public bool Overwrite { get; set; }
+    }
 }

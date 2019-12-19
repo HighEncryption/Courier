@@ -10,8 +10,6 @@
 
     using Newtonsoft.Json;
 
-    using FileInfo = Courier.Shared.FileInfo;
-
     class Program
     {
         static void Main()
@@ -51,11 +49,6 @@
             }
         }
 
-
-
-
-
-
         private static void HandleReceiveFileRequest(SerialPortManager serialPortManager)
         {
             OperationContext.Request.ContentStream =
@@ -90,160 +83,7 @@
             }
 
             serialPortManager.SendMessage(response);
-
-            /*
-            using (OperationContext.Request.ContentStream)
-            {
-                if (OperationContext.Request.Message.SequenceNumber == 1)
-                {
-                    string jsonContent = Encoding.UTF8.GetString(
-                        OperationContext.Request.Message.ContentBytes);
-                    ReceiveFileRequestMetadata receiveFileRequestMetadata =
-                        JsonConvert.DeserializeObject<ReceiveFileRequestMetadata>(jsonContent);
-
-                    string folderPath = ConfigurationManager.AppSettings["FolderPath"];
-                    string filePath = Path.Combine(folderPath, receiveFileRequestMetadata.Filename);
-
-                    if (!File.Exists(filePath))
-                    {
-                        response.Content.Success = false;
-                        response.Content.Error = "File not found";
-                        serialPortManager.SendMessage(response);
-                        return;
-                    }
-
-                    DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-                    System.IO.FileInfo[] fileInfo = directoryInfo.GetFiles(receiveFileRequestMetadata.Filename);
-
-                    ReceiveFileResponseMetadata responseMetadata = new ReceiveFileResponseMetadata()
-                    {
-                        Filename = fileInfo[0].Name,
-                        CreationTime = fileInfo[0].CreationTime,
-                        LastWriteTime = fileInfo[0].LastWriteTime,
-                        Length = fileInfo[0].Length
-                    };
-
-                    string jsonMetadataContent = JsonConvert.SerializeObject(responseMetadata);
-                    byte[] metadataBytes = Encoding.UTF8.GetBytes(jsonMetadataContent);
-
-                    FileStream fileStream = new FileStream(
-                        filePath,
-                        FileMode.Open,
-                        FileAccess.Read);
-
-                    OperationContext.Response.ContentStream = new JoinedStream(
-                        metadataBytes,
-                        fileStream);
-
-                    byte[] initialFileBuffer = new byte[Message.MessageContentMaxLength];
-                    int bytesRead =
-                        OperationContext.Response.ContentStream.Read(
-                            initialFileBuffer,
-                            0,
-                            initialFileBuffer.Length);
-
-                    sendFileRequestFileStream.Write(initialFileBuffer, 0, bytesRead);
-                }
-                else
-                {
-                    byte[] buffer = new byte[OperationContext.Request.ContentStream.Length];
-                    OperationContext.Request.ContentStream.Read(buffer, 0, buffer.Length);
-                    sendFileRequestFileStream.Write(buffer, 0, buffer.Length);
-                }
-
-                if (OperationContext.Request.Message.SequenceNumber ==
-                    OperationContext.Request.Message.SequenceLength)
-                {
-                    sendFileRequestFileStream.Close();
-                }
-            }
-
-            serialPortManager.SendMessage(response);
-            */
         }
-
-
-        //private static ReceiveFileRequestMetadata receiveFileRequestMetadata;
-        //private static JoinedStream receiveFileRequestFileStream;
-
-        //private static void HandleReceiveFileRequest(SerialPortManager serialPortManager)
-        //{
-        //    OperationContext.Request.ContentStream =
-        //        new MemoryStream(OperationContext.Request.Message.ContentBytes);
-
-        //    ReceiveFileResponseMessage response = new ReceiveFileResponseMessage
-        //    {
-        //        Content = new ReceiveFileResponseContent() { Success = true }
-        //    };
-
-        //    using (OperationContext.Request.ContentStream)
-        //    {
-        //        if (OperationContext.Request.Message.SequenceNumber == 1)
-        //        {
-        //            string jsonContent = Encoding.UTF8.GetString(
-        //                OperationContext.Request.Message.ContentBytes);
-        //            ReceiveFileRequestMetadata receiveFileRequestMetadata =
-        //                JsonConvert.DeserializeObject<ReceiveFileRequestMetadata>(jsonContent);
-
-        //            string folderPath = ConfigurationManager.AppSettings["FolderPath"];
-        //            string filePath = Path.Combine(folderPath, receiveFileRequestMetadata.Filename);
-
-        //            if (!File.Exists(filePath))
-        //            {
-        //                response.Content.Success = false;
-        //                response.Content.Error = "File not found";
-        //                serialPortManager.SendMessage(response);
-        //                return;
-        //            }
-
-        //            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
-        //            System.IO.FileInfo[] fileInfo = directoryInfo.GetFiles(receiveFileRequestMetadata.Filename);
-
-        //            ReceiveFileResponseMetadata responseMetadata = new ReceiveFileResponseMetadata()
-        //            {
-        //                Filename = fileInfo[0].Name,
-        //                CreationTime = fileInfo[0].CreationTime,
-        //                LastWriteTime = fileInfo[0].LastWriteTime,
-        //                Length = fileInfo[0].Length
-        //            };
-
-        //            string jsonMetadataContent = JsonConvert.SerializeObject(responseMetadata);
-        //            byte[] metadataBytes = Encoding.UTF8.GetBytes(jsonMetadataContent);
-
-        //            FileStream fileStream = new FileStream(
-        //                filePath,
-        //                FileMode.Open,
-        //                FileAccess.Read);
-
-        //            OperationContext.Response.ContentStream = new JoinedStream(
-        //                metadataBytes,
-        //                fileStream);
-
-        //            byte[] initialFileBuffer = new byte[Message.MessageContentMaxLength];
-        //            int bytesRead =
-        //                OperationContext.Response.ContentStream.Read(
-        //                    initialFileBuffer,
-        //                    0,
-        //                    initialFileBuffer.Length);
-
-        //            sendFileRequestFileStream.Write(initialFileBuffer, 0, bytesRead);
-        //        }
-        //        else
-        //        {
-        //            byte[] buffer = new byte[OperationContext.Request.ContentStream.Length];
-        //            OperationContext.Request.ContentStream.Read(buffer, 0, buffer.Length);
-        //            sendFileRequestFileStream.Write(buffer, 0, buffer.Length);
-        //        }
-
-        //        if (OperationContext.Request.Message.SequenceNumber ==
-        //            OperationContext.Request.Message.SequenceLength)
-        //        {
-        //            sendFileRequestFileStream.Close();
-        //        }
-        //    }
-
-        //    serialPortManager.SendMessage(response);
-        //}
 
         private static void HandleListFilesRequest(SerialPortManager serialPortManager)
         {

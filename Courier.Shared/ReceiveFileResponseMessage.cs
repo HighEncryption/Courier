@@ -1,5 +1,6 @@
 ﻿namespace Courier.Shared
 {
+    using System;
     using System.IO;
     using System.Text;
 
@@ -45,14 +46,24 @@
             stream.Position = 0;
 
             return stream;
-            //if (this.Content == null)
-            //{
-            //    return new MemoryStream();
-            //}
-
-            //string jsonContent = JsonConvert.SerializeObject(this.Content, Formatting.None);
-            //byte[] contentBytes = Encoding.UTF8.GetBytes(jsonContent);
-            //return new MemoryStream(contentBytes);
         }
+    }
+
+    public class ReceiveFileResponseContent
+    {
+        public bool Success { get; set; }
+
+        public string Error { get; set; }
+    }
+
+    public class ReceiveFileResponseMetadata
+    {
+        public string Filename { get; set; }
+
+        public DateTime CreationTime { get; set; }
+
+        public DateTime LastWriteTime { get; set; }
+
+        public long Length { get; set; }
     }
 }
